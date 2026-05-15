@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% set active = "farmers" %}
+{% block title %}Farmers – Smart Farm{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Farmers</h1>
+</div>
+
+<!-- ADD / EDIT FORM -->
+<div class="form-box">
+    <h3 id="form-title">Add New Farmer</h3>
+    <form id="farmer-form" method="post" action="/farmers/add">
+        <input type="hidden" name="farmer_id" id="f_id">
+        <div class="form-grid">
+            <input type="text"  name="full_name" id="f_name"    placeholder="Full Name" required>
+            <input type="email" name="email"     id="f_email"   placeholder="Email" required>
+            <input type="text"  name="phone"     id="f_phone"   placeholder="Phone">
+            <input type="text"  name="address"   id="f_address" placeholder="Address">
+        </div>
+        <div class="form-actions">
+            <button type="submit" id="f_submit" class="btn-primary">Add Farmer</button>
+            <button type="button" id="f_cancel" class="btn-cancel" style="display:none" onclick="resetForm()">Cancel</button>
+        </div>
+    </form>
+</div>
+
+<!-- DATA TABLE -->
+<div class="table-wrap">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th><th>Full Name</th><th>Email</th><th>Phone</th><th>Address</th><th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for f in farmers %}
+            <tr>
+                <td>{{ f.farmer_id }}</td>
+                <td>{{ f.full_name }}</td>
+                <td>{{ f.email }}</td>
+                <td>{{ f.phone }}</td>
+                <td>{{ f.address }}</td>
+                <td class="actions">
+                    <button class="btn-edit"
+                        onclick="editFarmer({{ f.farmer_id }}, '{{ f.full_name|replace("'", "\\'") }}', '{{ f.email }}', '{{ f.phone }}', '{{ f.address|replace("'", "\\'") }}')">
+                        Edit
+                    </button>
+                    <form method="post" action="/farmers/delete" style="display:inline;"
+                          onsubmit="return confirm('Delete this farmer?')">
+                        <input type="hidden" name="farmer_id" value="{{ f.farmer_id }}">
+                        <button type="submit" class="btn-delete">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="6" style="text-align:center;color:#6b7280;">No farmers found.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+function editFarmer(id, name, email, phone, address) {
+    document.getElementById('f_id').value      = id;
+    document.getElementById('f_name').value    = name;
+    document.getElementById('f_email').value   = email;
+    document.getElementById('f_phone').value   = phone;
+    document.getElementById('f_address').value = address;
+    document.getElementById('farmer-form').action    = '/farmers/update';
+    document.getElementById('form-title').textContent = 'Edit Farmer';
+    document.getElementById('f_submit').textContent  = 'Update Farmer';
+    document.getElementById('f_cancel').style.display = 'inline-block';
+    document.getElementById('farmer-form').scrollIntoView({behavior:'smooth'});
+}
+
+function resetForm() {
+    document.getElementById('farmer-form').reset();
+    document.getElementById('f_id').value = '';
+    document.getElementById('farmer-form').action    = '/farmers/add';
+    document.getElementById('form-title').textContent = 'Add New Farmer';
+    document.getElementById('f_submit').textContent  = 'Add Farmer';
+    document.getElementById('f_cancel').style.display = 'none';
+}
+</script>
+{% endblock %}

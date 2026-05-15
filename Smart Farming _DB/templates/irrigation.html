@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% set active = "irrigation" %}
+{% block title %}Irrigation – Smart Farm{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Irrigation Logs</h1>
+</div>
+
+<!-- ADD / EDIT FORM -->
+<div class="form-box">
+    <h3 id="form-title">Add Irrigation Log</h3>
+    <form id="irr-form" method="post" action="/irrigation/add">
+        <input type="hidden" name="log_id" id="i_id">
+        <div class="form-grid">
+            <select name="field_id" id="i_field" required>
+                <option value="" disabled selected>Select Field</option>
+                {% for f in fields %}
+                <option value="{{ f.field_id }}">{{ f.field_name }}</option>
+                {% endfor %}
+            </select>
+            <select name="crop_id" id="i_crop" required>
+                <option value="" disabled selected>Select Crop</option>
+                {% for c in crops %}
+                <option value="{{ c.crop_id }}">{{ c.crop_name }}</option>
+                {% endfor %}
+            </select>
+            <input type="number" name="water_amount_liters" id="i_water" placeholder="Water Amount (liters)" step="0.1" required>
+            <input type="date"   name="log_date"            id="i_date"  required>
+            <input type="text"   name="notes"               id="i_notes" placeholder="Notes (optional)">
+        </div>
+        <div class="form-actions">
+            <button type="submit" id="i_submit" class="btn-primary">Add Log</button>
+            <button type="button" id="i_cancel" class="btn-cancel" style="display:none" onclick="resetForm()">Cancel</button>
+        </div>
+    </form>
+</div>
+
+<!-- DATA TABLE -->
+<div class="table-wrap">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th><th>Field ID</th><th>Crop ID</th><th>Water (L)</th><th>Date</th><th>Notes</th><th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for l in logs %}
+            <tr>
+                <td>{{ l.log_id }}</td>
+                <td>{{ l.field_id }}</td>
+                <td>{{ l.crop_id }}</td>
+                <td>{{ l.water_amount_liters }}</td>
+                <td>{{ l.log_date }}</td>
+                <td>{{ l.notes }}</td>
+                <td class="actions">
+                    <button class="btn-edit"
+                        onclick="editLog({{ l.log_id }}, {{ l.field_id }}, {{ l.crop_id }}, {{ l.water_amount_liters }}, '{{ l.log_date }}', '{{ l.notes|replace("'","\\'") }}')">
+                        Edit
+                    </button>
+                    <form method="post" action="/irrigation/delete" style="display:inline;"
+                          onsubmit="return confirm('Delete this log?')">
+                        <input type="hidden" name="log_id" value="{{ l.log_id }}">
+                        <button type="submit" class="btn-delete">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="7" style="text-align:center;color:#6b7280;">No irrigation logs found.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+function editLog(id, fieldId, cropId, water, date, notes) {
+    document.getElementById('i_id').value    = id;
+    document.getElementById('i_field').value = fieldId;
+    document.getElementById('i_crop').value  = cropId;
+    document.getElementById('i_water').value = water;
+    document.getElementById('i_date').value  = date;
+    document.getElementById('i_notes').value = notes;
+    document.getElementById('irr-form').action     = '/irrigation/update';
+    document.getElementById('form-title').textContent = 'Edit Irrigation Log';
+    document.getElementById('i_submit').textContent   = 'Update Log';
+    document.getElementById('i_cancel').style.display = 'inline-block';
+    document.getElementById('irr-form').scrollIntoView({behavior:'smooth'});
+}
+
+function resetForm() {
+    document.getElementById('irr-form').reset();
+    document.getElementById('i_id').value = '';
+    document.getElementById('irr-form').action     = '/irrigation/add';
+    document.getElementById('form-title').textContent = 'Add Irrigation Log';
+    document.getElementById('i_submit').textContent   = 'Add Log';
+    document.getElementById('i_cancel').style.display = 'none';
+}
+</script>
+{% endblock %}

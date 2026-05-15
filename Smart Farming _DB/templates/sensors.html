@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% set active = "sensors" %}
+{% block title %}Sensors – Smart Farm{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Sensors</h1>
+</div>
+
+<!-- ADD / EDIT FORM -->
+<div class="form-box">
+    <h3 id="form-title">Add New Sensor</h3>
+    <form id="sensor-form" method="post" action="/sensors/add">
+        <input type="hidden" name="sensor_id" id="s_id">
+        <div class="form-grid">
+            <input type="text" name="sensor_type" id="s_type" placeholder="Sensor Type (e.g. Moisture)" required>
+            <select name="status" id="s_status" required>
+                <option value="" disabled selected>Status</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="maintenance">Maintenance</option>
+            </select>
+            <input type="date" name="install_date" id="s_install_date" required>
+        </div>
+        <div class="form-actions">
+            <button type="submit" id="s_submit" class="btn-primary">Add Sensor</button>
+            <button type="button" id="s_cancel" class="btn-cancel" style="display:none" onclick="resetForm()">Cancel</button>
+        </div>
+    </form>
+</div>
+
+<!-- DATA TABLE -->
+<div class="table-wrap">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th><th>Type</th><th>Status</th><th>Install Date</th><th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for s in sensors %}
+            <tr>
+                <td>{{ s.sensor_id }}</td>
+                <td>{{ s.sensor_type }}</td>
+                <td>{{ s.status }}</td>
+                <td>{{ s.install_date }}</td>
+                <td class="actions">
+                    <button class="btn-edit"
+                        data-id="{{ s.sensor_id }}"
+                        data-type="{{ s.sensor_type }}"
+                        data-status="{{ s.status }}"
+                        data-install="{{ s.install_date }}"
+                        onclick="editSensor(this)">
+                        Edit
+                    </button>
+                    <form method="post" action="/sensors/delete" style="display:inline;"
+                          onsubmit="return confirm('Delete this sensor?')">
+                        <input type="hidden" name="sensor_id" value="{{ s.sensor_id }}">
+                        <button type="submit" class="btn-delete">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="5" style="text-align:center;color:#6b7280;">No sensors found.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+function editSensor(btn) {
+    var d = btn.dataset;
+    document.getElementById('s_id').value                 = d.id;
+    document.getElementById('s_type').value               = d.type;
+    document.getElementById('s_status').value             = d.status;
+    document.getElementById('s_install_date').value       = d.install;
+    document.getElementById('sensor-form').action         = '/sensors/update';
+    document.getElementById('form-title').textContent     = 'Edit Sensor';
+    document.getElementById('s_submit').textContent       = 'Update Sensor';
+    document.getElementById('s_cancel').style.display     = 'inline-block';
+    document.getElementById('sensor-form').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetForm() {
+    document.getElementById('sensor-form').reset();
+    document.getElementById('s_id').value             = '';
+    document.getElementById('sensor-form').action     = '/sensors/add';
+    document.getElementById('form-title').textContent = 'Add New Sensor';
+    document.getElementById('s_submit').textContent   = 'Add Sensor';
+    document.getElementById('s_cancel').style.display = 'none';
+}
+</script>
+{% endblock %}

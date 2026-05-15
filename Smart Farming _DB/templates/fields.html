@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% set active = "fields" %}
+{% block title %}Fields – Smart Farm{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1>Fields</h1>
+</div>
+
+<!-- ADD / EDIT FORM -->
+<div class="form-box">
+    <h3 id="form-title">Add New Field</h3>
+
+    <form id="field-form" method="post" action="/fields/add">
+        <input type="hidden" name="field_id" id="fi_id">
+
+        <div class="form-grid">
+            <input type="text"
+                   name="field_name"
+                   id="fi_name"
+                   placeholder="Field Name"
+                   required>
+
+            <input type="text"
+                   name="location"
+                   id="fi_location"
+                   placeholder="Location"
+                   required>
+
+            <input type="number"
+                   name="area_hectares"
+                   id="fi_area"
+                   placeholder="Area (hectares)"
+                   step="0.01"
+                   required>
+
+            <input type="text"
+                   name="soil_type"
+                   id="fi_soil"
+                   placeholder="Soil Type"
+                   required>
+
+            <select name="farmer_id" id="fi_farmer" required>
+                <option value="" disabled selected>Select Farmer</option>
+
+                {% for farmer in farmers %}
+                <option value="{{ farmer.farmer_id }}">
+                    {{ farmer.full_name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit"
+                    id="fi_submit"
+                    class="btn-primary">
+                Add Field
+            </button>
+
+            <button type="button"
+                    id="fi_cancel"
+                    class="btn-cancel"
+                    style="display:none"
+                    onclick="resetForm()">
+                Cancel
+            </button>
+        </div>
+    </form>
+</div>

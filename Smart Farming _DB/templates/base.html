@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Smart Farm System{% endblock %}</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<nav class="navbar">
+    <a href="/dashboard" class="nav-brand">Smart Farm System</a>
+    <div class="nav-links">
+        <a href="/dashboard" {% if active == 'dashboard' %}class="active"{% endif %}>Dashboard</a>
+        <a href="/farmers"   {% if active == 'farmers'   %}class="active"{% endif %}>Farmers</a>
+        <a href="/fields"    {% if active == 'fields'    %}class="active"{% endif %}>Fields</a>
+        <a href="/crops"     {% if active == 'crops'     %}class="active"{% endif %}>Crops</a>
+        <a href="/sensors"   {% if active == 'sensors'   %}class="active"{% endif %}>Sensors</a>
+        <a href="/irrigation"{% if active == 'irrigation'%}class="active"{% endif %}>Irrigation</a>
+        <a href="/logout" class="logout">Logout</a>
+    </div>
+</nav>
+
+<div class="content">
+    {% if msg %}
+    <div class="alert alert-success">{{ msg }}</div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+</div>
+</body>
+</html>

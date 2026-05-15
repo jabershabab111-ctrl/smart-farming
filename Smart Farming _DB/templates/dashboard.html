@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% set active = "dashboard" %}
+{% block title %}Dashboard – Smart Farm{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Dashboard</h1>
+</div>
+<p style="color:#9ca3af; margin-bottom:8px;">Select a section to manage your farm data.</p>
+
+<div class="card-grid">
+    <a href="/farmers" class="card">
+        <div class="card-icon">&#128106;</div>
+        <div class="card-title">Farmers</div>
+        <div class="card-sub">Manage farmer profiles</div>
+    </a>
+    <a href="/fields" class="card">
+        <div class="card-icon">&#127807;</div>
+        <div class="card-title">Fields</div>
+        <div class="card-sub">Manage farm fields</div>
+    </a>
+    <a href="/crops" class="card">
+        <div class="card-icon">&#127806;</div>
+        <div class="card-title">Crops</div>
+        <div class="card-sub">Manage crop records</div>
+    </a>
+    <a href="/sensors" class="card">
+        <div class="card-icon">&#128268;</div>
+        <div class="card-title">Sensors</div>
+        <div class="card-sub">Manage IoT sensors</div>
+    </a>
+    <a href="/irrigation" class="card">
+        <div class="card-icon">&#128167;</div>
+        <div class="card-title">Irrigation</div>
+        <div class="card-sub">Manage irrigation logs</div>
+    </a>
+</div>
+{% endblock %}

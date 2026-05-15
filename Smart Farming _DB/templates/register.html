@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register – Smart Farm</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="centered">
+<div class="panel">
+    <h2>Create Account</h2>
+
+    {% if error %}
+    <div class="alert alert-error">{{ error }}</div>
+    {% endif %}
+
+    <form method="post" action="/register">
+        <input type="text"     name="full_name" placeholder="Full name" required>
+        <input type="email"    name="email"     placeholder="Email address" required>
+        <input type="password" name="password"  placeholder="Password" required>
+        <button type="submit" class="btn-register btn-full">Create Account</button>
+    </form>
+
+    <p style="margin-top:18px; color:#9ca3af;">
+        Already have an account? <a href="/login">Login</a>
+    </p>
+</div>
+</body>
+</html>
