@@ -1,107 +1,63 @@
-{% extends "base.html" %}
-{% set active = "sensor_data" %}
-{% block title %} sensor data Smart Farm{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sensor Data</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+        body{background:#0f172a;color:white;display:flex}
+        .sidebar{width:250px;height:100vh;background:#111827;padding:30px 20px}
+        .sidebar h2{margin-bottom:40px;color:#22c55e}
+        .sidebar a{display:block;color:#cbd5e1;text-decoration:none;margin:18px 0;font-size:18px}
+        .sidebar a:hover{color:#22c55e}
+        .main{flex:1;padding:40px}
+        h1{font-size:40px;margin-bottom:10px}
+        p{color:#94a3b8;margin-bottom:30px}
+        table{width:100%;border-collapse:collapse;background:#1e293b;border-radius:12px;overflow:hidden}
+        th,td{padding:15px;text-align:left;border-bottom:1px solid #334155}
+        th{background:#111827;color:#22c55e}
+        tr:hover{background:#334155}
+    </style>
+</head>
+<body>
 
-{% block content %}
-<div class="page-header">
+<div class="sidebar">
+    <h2>🌱 Smart Farm</h2>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/farmers">Farmers</a>
+    <a href="/fields">Fields</a>
+    <a href="/crops">Crops</a>
+    <a href="/sensors">Sensors</a>
+    <a href="/sensor-data">Sensor Data</a>
+    <a href="/irrigation">Irrigation</a>
+    <a href="/">Logout</a>
+</div>
+
+<div class="main">
     <h1>Sensor Data</h1>
-</div>
+    <p>View sensor readings.</p>
 
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Sensor ID</th>
+            <th>Moisture</th>
+            <th>Temperature</th>
+            <th>Humidity</th>
+            <th>Recorded At</th>
+        </tr>
 
-<div class="form-box">
-    <h3 id="form-title">Add New Sensor Data</h3>
-    <form id="sensordata-form" method="post" action="/sensor_data/add">
-        <input type="hidden" name="data_id" id="sd_id">
-        <div class="form-grid">
-            <select name="sensor_id" id="sd_sensor" required>
-                <option value="" disabled selected>Select Sensor</option>
-                {% for s in sensors %}
-                <option value="{{ s.sensor_id }}">{{ s.sensor_id }} – {{ s.sensor_type }}</option>
-                {% endfor %}
-            </select>
-            <input type="number" name="moisture"    id="sd_moisture"    placeholder="Moisture (%)"    step="0.01" required>
-            <input type="number" name="temperature" id="sd_temperature" placeholder="Temperature (°C)" step="0.01" required>
-            <input type="number" name="humidity"    id="sd_humidity"    placeholder="Humidity (%)"    step="0.01" required>
-            <input type="datetime-local" name="recorded_at" id="sd_recorded_at" required>
-        </div>
-        <div class="form-actions">
-            <button type="submit" id="sd_submit" class="btn-primary">Add Record</button>
-            <button type="button" id="sd_cancel" class="btn-cancel" style="display:none" onclick="resetForm()">Cancel</button>
-        </div>
-    </form>
-</div>
-
-<!-- DATA TABLE -->
-<div class="table-wrap">
-    <table class="data-table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Sensor ID</th>
-                <th>Moisture (%)</th>
-                <th>Temperature (°C)</th>
-                <th>Humidity (%)</th>
-                <th>Recorded At</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for d in sensor_data %}
-            <tr>
-                <td>{{ d.data_id }}</td>
-                <td>{{ d.sensor_id }}</td>
-                <td>{{ d.moisture }}</td>
-                <td>{{ d.temperature }}</td>
-                <td>{{ d.humidity }}</td>
-                <td>{{ d.recorded_at }}</td>
-                <td class="actions">
-                    <button class="btn-edit"
-                        onclick="editRecord(
-                             '{{ d.data_id }}',
-                             '{{ d.sensor_id }}',
-                             '{{ d.moisture }}',
-                             '{{ d.temperature }}',
-                             '{{ d.humidity }}',
-                             '{{ d.recorded_at }}'
-                        )">
-                        Edit
-                    </button>
-                    <form method="post" action="/sensor_data/delete" style="display:inline;"
-                          onsubmit="return confirm('Delete this record?')">
-                        <input type="hidden" name="data_id" value="{{ d.data_id }}">
-                        <button type="submit" class="btn-delete">Delete</button>
-                    </form>
-                </td>
-            </tr>
-        {% else %}
-            <tr><td colspan="7" style="text-align:center;color:#6b7280;">No sensor data found.</td></tr>
+        {% for data in sensor_data %}
+        <tr>
+            <td>{{ data.data_id }}</td>
+            <td>{{ data.sensor_id }}</td>
+            <td>{{ data.moisture }}</td>
+            <td>{{ data.temperature }}</td>
+            <td>{{ data.humidity }}</td>
+            <td>{{ data.recorded_at }}</td>
+        </tr>
         {% endfor %}
-        </tbody>
     </table>
 </div>
 
-<script>
-function editRecord(dataId, sensorId, moisture, temperature, humidity, recordedAt) {
-    document.getElementById('sd_id').value          = dataId;
-    document.getElementById('sd_sensor').value      = sensorId;
-    document.getElementById('sd_moisture').value    = moisture;
-    document.getElementById('sd_temperature').value = temperature;
-    document.getElementById('sd_humidity').value    = humidity;
-    document.getElementById('sd_recorded_at').value = recordedAt;
-    document.getElementById('sensordata-form').action    = '/sensor_data/update';
-    document.getElementById('form-title').textContent    = 'Edit Sensor Data';
-    document.getElementById('sd_submit').textContent     = 'Update Record';
-    document.getElementById('sd_cancel').style.display   = 'inline-block';
-    document.getElementById('sensordata-form').scrollIntoView({ behavior: 'smooth' });
-}
-
-function resetForm() {
-    document.getElementById('sensordata-form').reset();
-    document.getElementById('sd_id').value               = '';
-    document.getElementById('sensordata-form').action    = '/sensor_data/add';
-    document.getElementById('form-title').textContent    = 'Add New Sensor Data';
-    document.getElementById('sd_submit').textContent     = 'Add Record';
-    document.getElementById('sd_cancel').style.display   = 'none';
-}
-</script>
-{% endblock %}
+</body>
+</html>

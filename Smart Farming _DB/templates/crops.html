@@ -1,106 +1,66 @@
-{% extends "base.html" %}
-{% set active = "crops" %}
-{% block title %}Crops – Smart Farm{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crops</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+        body{background:#0f172a;color:white;display:flex}
+        .sidebar{width:250px;height:100vh;background:#111827;padding:30px 20px}
+        .sidebar h2{margin-bottom:40px;color:#22c55e}
+        .sidebar a{display:block;color:#cbd5e1;text-decoration:none;margin:18px 0;font-size:18px}
+        .sidebar a:hover{color:#22c55e}
+        .main{flex:1;padding:40px}
+        h1{font-size:40px;margin-bottom:10px}
+        p{color:#94a3b8;margin-bottom:30px}
+        table{width:100%;border-collapse:collapse;background:#1e293b;border-radius:12px;overflow:hidden}
+        th,td{padding:15px;text-align:left;border-bottom:1px solid #334155}
+        th{background:#111827;color:#22c55e}
+        tr:hover{background:#334155}
+    </style>
+</head>
+<body>
 
-{% block content %}
-<div class="page-header">
+<div class="sidebar">
+    <h2>🌱 Smart Farm</h2>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/farmers">Farmers</a>
+    <a href="/fields">Fields</a>
+    <a href="/crops">Crops</a>
+    <a href="/sensors">Sensors</a>
+    <a href="/irrigation">Irrigation</a>
+    <a href="/">Logout</a>
+</div>
+
+<div class="main">
     <h1>Crops</h1>
-</div>
+    <p>Manage crop records.</p>
 
-<div class="form-box">
-    <h3 id="form-title">Add New Crop</h3>
-    <form id="crop-form" method="post" action="/crops/add">
-        <input type="hidden" name="crop_id" id="c_id">
-        <div class="form-grid">
-            <input type="text"   name="crop_name"                    id="c_name"   placeholder="Crop Name" required>
-            <input type="text"   name="growing_season"               id="c_season" placeholder="Growing Season" required>
-            <input type="number" name="expected_yield_kg_per_hectare" id="c_yield"  placeholder="Expected Yield (kg/ha)" step="0.01" required>
-            <input type="number" name="min_moisture"                 id="c_minm"   placeholder="Min Moisture (%)" step="0.01" required>
-            <input type="number" name="max_moisture"                 id="c_maxm"   placeholder="Max Moisture (%)" step="0.01" required>
-            <select name="field_id" id="c_field" required>
-                <option value="" disabled selected>Select Field</option>
-                {% for f in fields %}
-                <option value="{{ f.field_id }}">{{ f.field_name }}</option>
-                {% endfor %}
-            </select>
-            <select name="farmer_id" id="c_farmer" required>
-                <option value="" disabled selected>Select Farmer</option>
-                {% for f in farmers %}
-                <option value="{{ f.farmer_id }}">{{ f.full_name }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="form-actions">
-            <button type="submit" id="c_submit" class="btn-primary">Add Crop</button>
-            <button type="button" id="c_cancel" class="btn-cancel" style="display:none" onclick="resetForm()">Cancel</button>
-        </div>
-    </form>
-</div>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Crop Name</th>
+            <th>Season</th>
+            <th>Yield kg/ha</th>
+            <th>Min Moisture</th>
+            <th>Max Moisture</th>
+            <th>Field ID</th>
+            <th>Farmer ID</th>
+        </tr>
 
-<!-- DATA TABLE -->
-<div class="table-wrap">
-    <table class="data-table">
-        <thead>
-            <tr>
-                <th>ID</th><th>Crop Name</th><th>Season</th><th>Yield (kg/ha)</th>
-                <th>Min Moist.</th><th>Max Moist.</th><th>Field ID</th><th>Farmer ID</th><th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for c in crops %}
-            <tr>
-                <td>{{ c.crop_id }}</td>
-                <td>{{ c.crop_name }}</td>
-                <td>{{ c.growing_season }}</td>
-                <td>{{ c.expected_yield_kg_per_hectare }}</td>
-                <td>{{ c.min_moisture }}</td>
-                <td>{{ c.max_moisture }}</td>
-                <td>{{ c.field_id }}</td>
-                <td>{{ c.farmer_id }}</td>
-                <td class="actions">
-                    <button class="btn-edit"
-                        onclick = 'editCrop '{{ c.crop_id }}\', \'{{ c.crop_name|replace("'","\\'") }}\', \'{{ c.growing_season|replace("'","\\'") }}\', {{ c.expected_yield_kg_per_hectare }}, {{ c.min_moisture }}, {{ c.max_moisture }}, \'{{ c.field_id }}\', \'{{ c.farmer_id }}\' )>
-                      
-                        Edit
-                    </button>
-                    <form method="post" action="/crops/delete" style="display:inline;"
-                          onsubmit="return confirm('Delete this crop?')">
-                        <input type="hidden" name="crop_id" value="{{ c.crop_id }}">
-                        <button type="submit" class="btn-delete">Delete</button>
-                    </form>
-                </td>
-            </tr>
-        {% else %}
-            <tr><td colspan="9" style="text-align:center;color:#6b7280;">No crops found.</td></tr>
+        {% for crop in crops %}
+        <tr>
+            <td>{{ crop.crop_id }}</td>
+            <td>{{ crop.crop_name }}</td>
+            <td>{{ crop.growing_season }}</td>
+            <td>{{ crop.expected_yield_kg_per_hectare }}</td>
+            <td>{{ crop.min_moisture }}</td>
+            <td>{{ crop.max_moisture }}</td>
+            <td>{{ crop.field_id }}</td>
+            <td>{{ crop.farmer_id }}</td>
+        </tr>
         {% endfor %}
-        </tbody>
     </table>
 </div>
 
-<script>
-function editCrop(id, name, season, yield_, minm, maxm, fieldId, farmerId) {
-    document.getElementById('c_id').value     = id;
-    document.getElementById('c_name').value   = name;
-    document.getElementById('c_season').value = season;
-    document.getElementById('c_yield').value  = yield_;
-    document.getElementById('c_minm').value   = minm;
-    document.getElementById('c_maxm').value   = maxm;
-    document.getElementById('c_field').value  = fieldId;
-    document.getElementById('c_farmer').value = farmerId;
-    document.getElementById('crop-form').action    = '/crops/update';
-    document.getElementById('form-title').textContent = 'Edit Crop';
-    document.getElementById('c_submit').textContent   = 'Update Crop';
-    document.getElementById('c_cancel').style.display = 'inline-block';
-    document.getElementById('crop-form').scrollIntoView({behavior:'smooth'});
-}
-
-function resetForm() {
-    document.getElementById('crop-form').reset();
-    document.getElementById('c_id').value = '';
-    document.getElementById('crop-form').action    = '/crops/add';
-    document.getElementById('form-title').textContent = 'Add New Crop';
-    document.getElementById('c_submit').textContent   = 'Add Crop';
-    document.getElementById('c_cancel').style.display = 'none';
-}
-</script>
-{% endblock %}
+</body>
+</html>

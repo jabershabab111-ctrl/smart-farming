@@ -1,38 +1,159 @@
-{% extends "base.html" %}
-{% set active = "dashboard" %}
-{% block title %}Dashboard – Smart Farm{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smart Farm Dashboard</title>
 
-{% block content %}
-<div class="page-header">
-    <h1>Dashboard</h1>
-</div>
-<p style="color:#9ca3af; margin-bottom:8px;">Select a section to manage your farm data.</p>
+    <style>
 
-<div class="card-grid">
-    <a href="/farmers" class="card">
-        <div class="card-icon">&#128106;</div>
-        <div class="card-title">Farmers</div>
-        <div class="card-sub">Manage farmer profiles</div>
-    </a>
-    <a href="/fields" class="card">
-        <div class="card-icon">&#127807;</div>
-        <div class="card-title">Fields</div>
-        <div class="card-sub">Manage farm fields</div>
-    </a>
-    <a href="/crops" class="card">
-        <div class="card-icon">&#127806;</div>
-        <div class="card-title">Crops</div>
-        <div class="card-sub">Manage crop records</div>
-    </a>
-    <a href="/sensors" class="card">
-        <div class="card-icon">&#128268;</div>
-        <div class="card-title">Sensors</div>
-        <div class="card-sub">Manage IoT sensors</div>
-    </a>
-    <a href="/irrigation" class="card">
-        <div class="card-icon">&#128167;</div>
-        <div class="card-title">Irrigation</div>
-        <div class="card-sub">Manage irrigation logs</div>
-    </a>
-</div>
-{% endblock %}
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial;
+        }
+
+        body{
+            background:#0f172a;
+            color:white;
+            display:flex;
+        }
+
+        .sidebar{
+            width:250px;
+            height:100vh;
+            background:#111827;
+            padding:30px 20px;
+        }
+
+        .sidebar h2{
+            margin-bottom:40px;
+            color:#22c55e;
+        }
+
+        .sidebar a{
+            display:block;
+            color:#cbd5e1;
+            text-decoration:none;
+            margin:18px 0;
+            font-size:18px;
+            transition:0.3s;
+        }
+
+        .sidebar a:hover{
+            color:#22c55e;
+            transform:translateX(5px);
+        }
+
+        .main{
+            flex:1;
+            padding:40px;
+        }
+
+        .main h1{
+            font-size:40px;
+            margin-bottom:10px;
+        }
+
+        .main p{
+            color:#94a3b8;
+            margin-bottom:40px;
+        }
+
+        .cards{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+            gap:20px;
+        }
+
+        .card{
+            background:#1e293b;
+            padding:30px;
+            border-radius:16px;
+            transition:0.3s;
+            cursor:pointer;
+            border:1px solid transparent;
+        }
+
+        .card:hover{
+            transform:translateY(-5px);
+            border-color:#22c55e;
+        }
+
+        .card h3{
+            margin-top:15px;
+            margin-bottom:10px;
+        }
+
+        .icon{
+            font-size:40px;
+        }
+
+        .card p{
+            color:#cbd5e1;
+            margin:0;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="sidebar">
+
+        <h2>🌱 Smart Farm</h2>
+
+        <a href="/dashboard">Dashboard</a>
+        <a href="/farmers">Farmers</a>
+        <a href="/fields">Fields</a>
+        <a href="/crops">Crops</a>
+        <a href="/sensors">Sensors</a>
+        <a href="/irrigation">Irrigation</a>
+        <a href="/">Logout</a>
+
+    </div>
+
+    <div class="main">
+
+        <h1>Dashboard</h1>
+
+        <p>Manage your smart farming system.</p>
+
+        <div class="cards">
+
+            <div class="card">
+                <div class="icon">👨‍🌾</div>
+                <h3>Farmers</h3>
+                <p>Manage farmer profiles</p>
+            </div>
+
+            <div class="card">
+                <div class="icon">🌾</div>
+                <h3>Fields</h3>
+                <p>Manage farm fields</p>
+            </div>
+
+            <div class="card">
+                <div class="icon">🌱</div>
+                <h3>Crops</h3>
+                <p>Manage crop records</p>
+            </div>
+
+            <div class="card">
+                <div class="icon">📡</div>
+                <h3>Sensors</h3>
+                <p>Monitor sensors</p>
+            </div>
+
+            <div class="card">
+                <div class="icon">💧</div>
+                <h3>Irrigation</h3>
+                <p>Control irrigation</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
