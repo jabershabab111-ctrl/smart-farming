@@ -425,8 +425,8 @@ build_crud_frame(
 build_crud_frame(
     "sensor_data", "Sensor Data", "sensor_data", "data_id",
     columns=[
-        ("ID",          "data_id"),
-        ("Sensor ID",   "sensor_id"),
+        ("Data_id",   "data_id"),
+        
         ("Moisture",    "moisture"),
         ("Temperature", "temperature"),
         ("Humidity",    "humidity"),

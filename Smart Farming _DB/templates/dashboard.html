@@ -4,7 +4,6 @@
     <title>Smart Farm Dashboard</title>
 
     <style>
-
         *{
             margin:0;
             padding:0;
@@ -72,6 +71,9 @@
             transition:0.3s;
             cursor:pointer;
             border:1px solid transparent;
+            text-decoration:none;
+            color:white;
+            display:block;
         }
 
         .card:hover{
@@ -92,67 +94,67 @@
             color:#cbd5e1;
             margin:0;
         }
-
     </style>
-
 </head>
 
 <body>
 
     <div class="sidebar">
-
-        <h2>🌱 Smart Farm</h2>
+        <h2> Smart Farm</h2>
 
         <a href="/dashboard">Dashboard</a>
         <a href="/farmers">Farmers</a>
         <a href="/fields">Fields</a>
         <a href="/crops">Crops</a>
         <a href="/sensors">Sensors</a>
+        <a href="/sensor-data">Sensor Data</a>
         <a href="/irrigation">Irrigation</a>
         <a href="/">Logout</a>
-
     </div>
 
     <div class="main">
-
         <h1>Dashboard</h1>
-
         <p>Manage your smart farming system.</p>
 
         <div class="cards">
 
-            <div class="card">
+            <a href="/farmers" class="card">
                 <div class="icon">👨‍🌾</div>
                 <h3>Farmers</h3>
                 <p>Manage farmer profiles</p>
-            </div>
+            </a>
 
-            <div class="card">
+            <a href="/fields" class="card">
                 <div class="icon">🌾</div>
                 <h3>Fields</h3>
                 <p>Manage farm fields</p>
-            </div>
+            </a>
 
-            <div class="card">
+            <a href="/crops" class="card">
                 <div class="icon">🌱</div>
                 <h3>Crops</h3>
                 <p>Manage crop records</p>
-            </div>
+            </a>
 
-            <div class="card">
+            <a href="/sensors" class="card">
                 <div class="icon">📡</div>
                 <h3>Sensors</h3>
                 <p>Monitor sensors</p>
-            </div>
+            </a>
 
-            <div class="card">
+            <a href="/sensor-data" class="card">
+                <div class="icon">📊</div>
+                <h3>Sensor Data</h3>
+                <p>View sensor readings</p>
+            </a>
+
+            <a href="/irrigation" class="card">
                 <div class="icon">💧</div>
                 <h3>Irrigation</h3>
                 <p>Control irrigation</p>
-            </div>
+            </a>
 
         </div>
-
     </div>
 
 </body>

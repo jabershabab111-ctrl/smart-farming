@@ -72,11 +72,21 @@ def sensors():
     res = supabase.table("sensors").select("*").execute()
     return render_template("sensors.html", sensors=res.data)
 
+@app.route("/sensor-data")
+def sensor_data():
+    res = supabase.table("sensor_data").select("*").execute()
+    return render_template("sensor_data.html", sensor_data=res.data)
+
 
 @app.route("/irrigation")
 def irrigation():
     res = supabase.table("irrigation_logs").select("*").execute()
     return render_template("irrigation.html", irrigation=res.data)
+
+
+@app.route("/register")
+def register():
+    return render_template("register.html")
 
 
 if __name__ == "__main__":
