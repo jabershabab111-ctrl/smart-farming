@@ -38,7 +38,7 @@ style.map("Treeview", background=[("selected", "#1d4ed8")])
 style.configure("TEntry",    fieldbackground="#374151", foreground="#f3f4f6", insertcolor="#f3f4f6")
 style.configure("TCombobox", fieldbackground="#374151", foreground="#f3f4f6")
 
-# FRAME CONTAINER
+
 container = tk.Frame(root, bg="#1f2937")
 container.pack(fill="both", expand=True)
 
@@ -53,7 +53,7 @@ def make_frame(name, bg="#1f2937"):
     frames[name] = f
     return f
 
-# HELPERS
+
 def lbl(parent, text, row, col, bg="#111827", fg="#9ca3af", sticky="e", padx=6, pady=4):
     tk.Label(parent, text=text, bg=bg, fg=fg, font=("Segoe UI", 10)).grid(
         row=row, column=col, sticky=sticky, padx=padx, pady=pady)
@@ -71,7 +71,7 @@ def make_tree(parent, cols, heights=12):
     vsb.pack(side="left", fill="y")
     return tree
 
-# LOGIN FRAME
+
 login_frame = make_frame("login")
 
 ttk.Label(login_frame, text="Smart Farm System", style="Header.TLabel").pack(pady=(60, 4))
@@ -131,7 +131,7 @@ tk.Button(lf_box, text="Create Account", command=lambda: show_frame("register"),
           bg="#374151", fg="#d1d5db", font=("Segoe UI", 10), relief="flat",
           padx=12, pady=5, cursor="hand2", width=28).grid(row=6, column=0)
 
-# REGISTER FRAME
+
 register_frame = make_frame("register")
 
 ttk.Label(register_frame, text="Create Account", style="Header.TLabel").pack(pady=(60, 4))
@@ -183,7 +183,7 @@ tk.Button(rf_box, text="Back to Login", command=lambda: show_frame("login"),
           bg="#374151", fg="#d1d5db", font=("Segoe UI", 10), relief="flat",
           padx=12, pady=5, cursor="hand2", width=28).grid(row=8, column=0)
 
-# HOME / DASHBOARD FRAME
+
 home_frame = make_frame("home")
 
 ttk.Label(home_frame, text="Dashboard", style="Header.TLabel").pack(pady=(40, 6))
@@ -211,7 +211,7 @@ tk.Button(home_frame, text="Logout", command=lambda: show_frame("login"),
           bg="#f97316", fg="white", font=("Segoe UI", 10, "bold"),
           relief="flat", padx=14, pady=6, cursor="hand2").pack(pady=20)
 
-# SHARED CRUD BUILDER
+
 def build_crud_frame(frame_name, title, table, pk, columns, field_builders):
     frm = make_frame(frame_name, bg="#1f2937")
 
@@ -313,7 +313,7 @@ def build_crud_frame(frame_name, title, table, pk, columns, field_builders):
     load()
     return frm
 
-# FIELD BUILDER HELPERS
+
 def text_field(label, db_field, row_i, col_a=0, col_b=1):
     def build(parent, _i):
         lbl(parent, label, row_i, col_a)
@@ -340,7 +340,7 @@ def fk_combo_field(label, db_field, fk_table, fk_id, fk_label, row_i, col_a=2, c
         return db_field, c
     return build
 
-# FARMERS
+
 build_crud_frame(
     "farmers", "Farmers", "users", "user_id",
     columns=[
@@ -357,7 +357,7 @@ build_crud_frame(
     ]
 )
 
-# FIELDS
+
 build_crud_frame(
     "fields", "Fields", "fields", "field_id",
     columns=[
@@ -379,7 +379,7 @@ build_crud_frame(
     ]
 )
 
-# CROPS
+
 build_crud_frame(
     "crops", "Crops", "crops", "crop_id",
     columns=[
@@ -403,7 +403,7 @@ build_crud_frame(
     ]
 )
 
-# SENSORS
+
 build_crud_frame(
     "sensors", "Sensors", "sensors", "sensor_id",
     columns=[
@@ -421,7 +421,7 @@ build_crud_frame(
     ]
 )
 
-# SENSOR DATA
+
 build_crud_frame(
     "sensor_data", "Sensor Data", "sensor_data", "data_id",
     columns=[
@@ -441,7 +441,7 @@ build_crud_frame(
     ]
 )
 
-# IRRIGATION LOGS
+
 build_crud_frame(
     "irrigation", "Irrigation Logs", "irrigation_logs", "log_id",
     columns=[
@@ -459,7 +459,7 @@ build_crud_frame(
     ]
 )
 
-# QUERIES FRAME
+
 queries_frame = make_frame("queries")
 
 q_top = tk.Frame(queries_frame, bg="#111827", pady=6)
@@ -551,6 +551,6 @@ for label, fn in PRESET_QUERIES.items():
               font=("Segoe UI", 9), padx=8, pady=4,
               cursor="hand2").pack(side="left", padx=3)
 
-# START
+
 show_frame("login")
 root.mainloop()
